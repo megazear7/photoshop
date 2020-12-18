@@ -1,6 +1,6 @@
 var MOD = {
-    MIDDLE : "MOD.MIDDLE",
-    BOTTOM : "MOD.BOTTOM"
+    MIDDLE : "middle",
+    BOTTOM : "bottom"
 };
 var ATTACK_TYPE = {
     MELEE : "ATTACK_TYPE.MELEE",
@@ -36,8 +36,7 @@ var initElement = combatElement.layerSets["init"];
 var attackElement = combatElement.layerSets["attack"];
 var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
-var modBottomElement = elements.layerSets["mod"].layerSets["bottom"];
-var modMiddleElement = elements.layerSets["mod"].layerSets["middle"];
+var modElement = elements.layerSets["mod"];
 
 createCards();
 
@@ -82,6 +81,17 @@ function buildCards() {
             { costType: "food", costVal: 2 },
             { costType: "wood", costVal: 1 }
         ],
+        mod: {
+            bottom: [
+                { modType: "iron", modVal: "+2" },
+                { modType: "knowledge", modVal: "-1" },
+            ],
+            middle: [
+                { modType: "wood", modVal: "+3" },
+                { modType: "food", modVal: "+1" },
+                { modType: "iron", modVal: "+2" },
+            ],
+        },
         image: IMAGES.DEFAULT,
         desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
     }));
@@ -251,10 +261,11 @@ function updateCost(pos) {
         var costPosElement = costElement.layerSets["cost_" + pos];
 
         if (card.cost && pos <= card.cost.length) {
+            var costItem = card.cost[pos-1];
             costPosElement.visible = true;
 
-            revealOneByName(costPosElement.layerSets["symbols"], card.cost[pos-1].costType);
-            // TODO set cost text
+            revealOneByName(costPosElement.layerSets["symbols"], costItem.costType);
+            costPosElement.layers["text"].textItem.contents = costItem.costVal;
         } else {
             costPosElement.visible = false;
         }
@@ -263,23 +274,17 @@ function updateCost(pos) {
 
 function updateMod(loc, count, pos) {
     return function(card) {
-        // TODO update and hide or show element
-        /*
-        for (var i = 0; i < costElement.layerSets.length; i++) {
-            var layerSet = costElement.layerSets[i];
+        var layerSet = modElement.layerSets[loc].layerSets["mod_"+count+"_"+pos];
 
-            if (layerSet.name.startsWith(card.cost.length)) {
-                layerSet.visible = false;
+        if (card.mod && card.mod[loc] && count === card.mod[loc].length) {
+            var modItem = card.mod[loc][pos-1];
+            layerSet.visible = true;
 
-                for (var j = 0; j < card.cost; j++) {
-                    var costItem = card.cost[j];
-                    revealOneByName(layerSet.layerSets["symbols"], costItem.costType);
-                }
-            } else {
-                layerSet.visible = false;
-            }
+            revealOneByName(layerSet.layerSets["symbols"], modItem.modType);
+            layerSet.layers["text"].textItem.contents = modItem.modVal;
+        } else {
+            layerSet.visible = false;
         }
-        */
     };
 }
 
