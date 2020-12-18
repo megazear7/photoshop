@@ -90,6 +90,7 @@ function buildCards() {
 
     addCards(cards, 1, createCard({
         title: "Farm",
+        placement: PLACEMENTS.NATION,
         cost: [
             { costType: "wood", costVal: 2 }
         ],
@@ -406,6 +407,8 @@ function printSheet() {
             var fileObj = File(cardPaths[i]);
             if (fileObj.exists) {
                 placeFile(fileObj);
+                var newLayer = sheetDoc.layers["tmp-" + (i + 1)];
+                moveLayer(newLayer, i+1);
             }
         }
     }
@@ -419,6 +422,24 @@ function printSheet() {
     sheetId = sheetId + 1;
 }
 
+function moveLayer(layer, cardPos) {
+    var position = layer.bounds;
+    var cardXPos = (cardPos-1) % 4;
+    var cardYPos = Math.floor((cardPos-1) / 4);
+    var width = (position[2].value) - (position[0].value);
+    var height = (position[3].value) - (position[1].value);
+    var moveX = cardXPos * width;
+    var moveY = cardYPos * height;
+    moveLayerTo(layer, moveX , moveY);
+}
+
+function moveLayerTo(fLayer,fX,fY) {
+    var position = fLayer.bounds;
+    position[0] = fX - position[0];
+    position[1] = fY - position[1];
+    fLayer.translate(-position[0],-position[1]);
+}
+
 function placeFile(file) {
     var desc21 = new ActionDescriptor();
     desc21.putPath( charIDToTypeID('null'), new File(file) );
@@ -429,15 +450,3 @@ function placeFile(file) {
     desc21.putObject( charIDToTypeID('Ofst'), charIDToTypeID('Ofst'), desc22 );
     executeAction( charIDToTypeID('Plc '), desc21, DialogModes.NO );
 }
-
-/*
-function placeFile(file) {
-    var desc1 = new ActionDescriptor();
-    var list1 = new ActionList();
-    var ref1 = new ActionReference();
-    ref1.putName( charIDToTypeID('Lyr '), file );
-    list1.putReference( ref1 );
-    desc1.putList( charIDToTypeID('null'), list1 );
-    executeAction( charIDToTypeID('Hd  '), desc1, DialogModes.NO );
-};
-*/
