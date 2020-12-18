@@ -46,10 +46,10 @@ createCards();
 
 function createCards() {
     var cards = buildCards();
+    var temporaryIndex = 1;
 
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
-        var temporaryIndex = temporaryIndex + 1;
         if (temporaryIndex >= 6) {
             printSheet();
             temporaryIndex = 0;
@@ -57,6 +57,7 @@ function createCards() {
 
         setupCard(card);
         printCard(temporaryIndex);
+        temporaryIndex = temporaryIndex + 1;
     }
 
     printSheet();
@@ -370,13 +371,25 @@ function cleanup() {
 }
 
 function printCard(fileIndex) {
-    /*
-    var fileName = "legacy-of-nations-temp-file-" + fileIndex + ".jpg";
-    var fileRef = new File("/Users/35267/Desktop/" + fileName);
+    var fileName = "tmp-" + fileIndex + ".jpg";
+
+    var fileRef = new File(activeDocument.path.fullName + "/tmp/" + fileName);
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = 12;
+    activeDocument.saveAs(fileRef, jpegOptions, true);
 
-    activeDocument.saveAs(fileRef, jpegOptions, true, Extension.LOWERCASE);
+
+    /*
+    var jpgOptions = new JPEGSaveOptions();
+    jpgOptions.quality = 12;
+    jpgOptions.embedColorProfile = true;
+    jpgOptions.formatOptions = FormatOptions.PROGRESSIVE;
+    if (jpgOptions.formatOptions == FormatOptions.PROGRESSIVE) {
+        jpgOptions.scans = 5
+    };
+    jpgOptions.matte = MatteType.NONE;
+
+    activeDocument.saveAs(new File("/Users/35267/" + fileName), jpgOptions);
     */
 }
 
