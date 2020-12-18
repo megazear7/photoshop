@@ -3,8 +3,8 @@ var MOD = {
     BOTTOM : "bottom"
 };
 var ATTACK_TYPE = {
-    MELEE : "ATTACK_TYPE.MELEE",
-    RANGED : "ATTACK_TYPE.RANGED"
+    MELEE : "melee",
+    RANGED : "ranged"
 };
 var CARD_TYPES = {
     FOOT              : "foot_troop",
@@ -22,12 +22,15 @@ var PLACEMENTS = {
     ARMY     : "army_placement",
 };
 var IMAGES = {
-    DEFAULT : "IMAGES.DEFAULT",
+    DEFAULT : "default",
 }
 var elementLayer = app.activeDocument.layers.getByName('elements');
 var activeDocument = app.activeDocument;
 var elements = activeDocument.layerSets["elements"];
 var textElement = elements.layerSets["text"];
+var titleElement = textElement.layers["title"];
+var descElement = textElement.layers["desc"];
+var cardIdElement = textElement.layers["card_id"];
 var imageElement = elements.layerSets["image"];
 var typeElement = elements.layerSets["type"];
 var placementElement = elements.layerSets["placement"];
@@ -37,13 +40,12 @@ var attackElement = combatElement.layerSets["attack"];
 var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
 var modElement = elements.layerSets["mod"];
+var cardId = 1;
 
 createCards();
 
 function createCards() {
     var cards = buildCards();
-    var elements = buildElements();
-    hideAllElements();
 
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
@@ -53,11 +55,7 @@ function createCards() {
             temporaryIndex = 0;
         }
 
-        for (var j = 0; j < elements.length; j++) {
-            var element = elements[j];
-            element(card);
-        }
-
+        setupCard(card);
         printCard(temporaryIndex);
     }
 
@@ -73,7 +71,7 @@ function buildCards() {
 
     addCards(cards, 1, createMeleeFootTroop({
         title: "Spearmen",
-        combat : {
+        combat: {
             attack: 1,
             defense: 4 
         },
@@ -81,19 +79,23 @@ function buildCards() {
             { costType: "food", costVal: 2 },
             { costType: "wood", costVal: 1 }
         ],
-        mod: {
-            bottom: [
-                { modType: "iron", modVal: "+2" },
-                { modType: "knowledge", modVal: "-1" },
-            ],
-            middle: [
-                { modType: "wood", modVal: "+3" },
-                { modType: "food", modVal: "+1" },
-                { modType: "iron", modVal: "+2" },
-            ],
-        },
         image: IMAGES.DEFAULT,
         desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createCard({
+        title: "Farm",
+        cost: [
+            { costType: "wood", costVal: 2 }
+        ],
+        mod: {
+            bottom: [
+                { modType: "food", modVal: "+2" },
+            ]
+        },
+        deckName: "Civic Buildings",
+        image: IMAGES.DEFAULT,
+        desc: "Farms are fun for picking and planting.",
     }));
 
     return cards;
@@ -110,12 +112,7 @@ function createCard(ops) {
         cardType: ops.cardType,
         title: ops.title,
         placement: ops.placement,
-        combat : {
-            init: ops.init,
-            attack: ops.attack,
-            attackType: ops.attackType,
-            defense: ops.defense
-        },
+        combat : ops.combat,
         image: ops.image || IMAGES.DEFAULT,
         cost: ops.cost,
         desc: ops.desc,
@@ -125,6 +122,7 @@ function createCard(ops) {
 }
 
 function createMilitaryCard(ops) {
+    ops = createCard(ops);
     ops.deckName = {
         "CARD_TYPES.FOOT"         : "Foot Troop",
         "CARD_TYPES.MOUNTED"      : "Mounted Troop",
@@ -132,42 +130,51 @@ function createMilitaryCard(ops) {
     }[ops.cardType];
     ops.placement = PLACEMENTS.ARMY;
 
-    return createCard(ops);
+    return ops;
 }
 
 function createMeleeFootTroop(ops) {
+    ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.FOOT;
-    ops.attackType = ATTACK_TYPE.MELEE;
-    ops.init = 1;
-    return createMilitaryCard(ops);
+    ops.combat.attackType = ATTACK_TYPE.MELEE;
+    ops.combat.init = 1;
+    return ops;
 }
 
 function createRangedFootTroop(ops) {
-    ops.attackType = ATTACK_TYPE.RANGED;
+    ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.FOOT;
-    ops.init = 2;
-    return createMilitaryCard(ops);
+    ops.combat = ops.combat || { };
+    ops.combat.attackType = ATTACK_TYPE.RANGED;
+    ops.combat.init = 2;
+    return ops;
 }
 
 function createMeleeMountedTroop(ops) {
-    ops.attackType = ATTACK_TYPE.MELEE;
+    ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.MOUNTED;
-    ops.init = 3;
-    return createMilitaryCard(ops);
+    ops.combat = ops.combat || { };
+    ops.combat.attackType = ATTACK_TYPE.MELEE;
+    ops.combat.init = 3;
+    return ops;
 }
 
 function createRangedMountedTroop(ops) {
-    ops.attackType = ATTACK_TYPE.RANGED;
+    ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.MOUNTED;
-    ops.init = 1;
-    return createMilitaryCard(ops);
+    ops.combat = ops.combat || { };
+    ops.combat.attackType = ATTACK_TYPE.RANGED;
+    ops.combat.init = 1;
+    return ops;
 }
 
 function createSiegeEngineTroop(ops) {
-    ops.attackType = ATTACK_TYPE.RANGED;
+    ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.SIEGE_ENGINE;
-    ops.init = 5;
-    return createMilitaryCard(ops);
+    ops.combat = ops.combat || { };
+    ops.combat.attackType = ATTACK_TYPE.RANGED;
+    ops.combat.init = 5;
+    return ops;
 }
 
 function buildElements() {
@@ -223,7 +230,7 @@ function updateCardType() {
 
 function updateTitle() {
     return function(card) {
-        // TODO update and hide or show element
+        titleElement.textItem.contents = card.title;
     }
 }
 
@@ -235,24 +242,41 @@ function updatePlacement() {
 
 function updateInit() {
     return function(card) {
+        if (card.combat) {
+            initElement.visible = true;
+            initElement.layers["text"].textItem.contents = "+" + card.combat.init;
+        } else {
+            initElement.visible = false;
+        }
     }
 }
 
 function updateAttack() {
     return function(card) {
-        // TODO update and hide or show element
+        if (card.combat) {
+            attackElement.visible = true;
+            attackElement.layers["text"].textItem.contents = "+" + card.combat.attack;
+            revealOneByName(attackElement.layerSets["symbols"], card.combat.attackType);
+        } else {
+            attackElement.visible = false;
+        }
     }
 }
 
 function updateDefense() {
     return function(card) {
-        // TODO update and hide or show element
+        if (card.combat) {
+            defenseElement.visible = true;
+            defenseElement.layers["text"].textItem.contents = "+" + card.combat.defense;
+        } else {
+            defenseElement.visible = false;
+        }
     }
 }
 
 function updateImage() {
     return function(card) {
-        // TODO update and hide or show element
+        revealOneByName(imageElement, card.image);
     }
 }
 
@@ -290,23 +314,59 @@ function updateMod(loc, count, pos) {
 
 function updateDesc() {
     return function(card) {
-        // TODO update and hide or show element
+        descElement.textItem.contents = card.desc;
     }
 }
 
 function updateId() {
     return function(card) {
-        // TODO update and hide or show element
+        cardIdElement.textItem.contents = "Legacy of Nations - " + card.deckName + " - " + cardId;
     }
 }
 
-function hideAllElements() {
-    // TODO
+function setupCard(card) {
+    var elements = buildElements();
+
+    for (var j = 0; j < elements.length; j++) {
+        var element = elements[j];
+        element(card);
+    }
 }
 
 function cleanup() {
     // TODO remove temporary files
-    // TODO Reset to default text/icon values
+
+    setupCard(createCard({
+        cardType: CARD_TYPES.SCIENCE_RESEARCH,
+        title: "Card Title",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 1,
+            attack: 1,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 1,
+        },
+        cost: [
+            { costType: "food", costVal: 1 },
+            { costType: "wealth", costVal: 2 },
+            { costType: "iron", costVal: 3 }
+        ],
+        mod: {
+            middle: [
+                { modType: "food", modVal: 1 },
+                { modType: "wood", modVal: 2 },
+                { modType: "iron", modVal: 3 }
+            ],
+            bottom: [
+                { modType: "knowledge", modVal: 1 },
+                { modType: "iron", modVal: 2 },
+                { modType: "wood", modVal: 3 },
+                { modType: "wealth", modVal: 4 }
+            ]
+        },
+        deckName: "Sample Card",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    }));
 }
 
 function printCard(fileIndex) {
