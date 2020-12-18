@@ -32,6 +32,9 @@ var imageElement = elements.layerSets["image"];
 var typeElement = elements.layerSets["type"];
 var placementElement = elements.layerSets["placement"];
 var combatElement = elements.layerSets["combat"];
+var initElement = combatElement.layerSets["init"];
+var attackElement = combatElement.layerSets["attack"];
+var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
 var modBottomElement = elements.layerSets["mod"].layerSets["bottom"];
 var modMiddleElement = elements.layerSets["mod"].layerSets["middle"];
@@ -75,6 +78,10 @@ function buildCards() {
             attack: 1,
             defense: 4 
         },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
         image: IMAGES.DEFAULT,
         desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
     }));
@@ -212,14 +219,12 @@ function updateTitle() {
 
 function updatePlacement() {
     return function(card) {
-        // TODO update and hide or show element
         revealOneByName(placementElement, card.placement);
     }
 }
 
 function updateInit() {
     return function(card) {
-        // TODO update and hide or show element
     }
 }
 
@@ -243,13 +248,38 @@ function updateImage() {
 
 function updateCost(pos) {
     return function(card) {
-        // TODO update and hide or show element
+        var costPosElement = costElement.layerSets["cost_" + pos];
+
+        if (card.cost && pos <= card.cost.length) {
+            costPosElement.visible = true;
+
+            revealOneByName(costPosElement.layerSets["symbols"], card.cost[pos-1].costType);
+            // TODO set cost text
+        } else {
+            costPosElement.visible = false;
+        }
     };
 }
 
 function updateMod(loc, count, pos) {
     return function(card) {
         // TODO update and hide or show element
+        /*
+        for (var i = 0; i < costElement.layerSets.length; i++) {
+            var layerSet = costElement.layerSets[i];
+
+            if (layerSet.name.startsWith(card.cost.length)) {
+                layerSet.visible = false;
+
+                for (var j = 0; j < card.cost; j++) {
+                    var costItem = card.cost[j];
+                    revealOneByName(layerSet.layerSets["symbols"], costItem.costType);
+                }
+            } else {
+                layerSet.visible = false;
+            }
+        }
+        */
     };
 }
 
