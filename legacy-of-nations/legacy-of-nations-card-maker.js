@@ -41,6 +41,9 @@ var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
 var modElement = elements.layerSets["mod"];
 var cardId = 1;
+var sheetId = 1;
+var cardPaths = [];
+var cardsPerSheet = 8;
 
 createCards();
 
@@ -50,7 +53,7 @@ function createCards() {
 
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
-        if (temporaryIndex >= 6) {
+        if (temporaryIndex >= cardsPerSheet) {
             printSheet();
             temporaryIndex = 0;
         }
@@ -382,27 +385,59 @@ function cleanup() {
 function printCard(fileIndex) {
     var fileName = "tmp-" + fileIndex + ".jpg";
 
-    var fileRef = new File(activeDocument.path.fullName + "/tmp/" + fileName);
+    cardPaths[fileIndex-1] = activeDocument.path.fullName + "/tmp/" + fileName;
+    var fileRef = new File(cardPaths[fileIndex-1]);
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = 12;
     activeDocument.saveAs(fileRef, jpegOptions, true);
-
-
-    /*
-    var jpgOptions = new JPEGSaveOptions();
-    jpgOptions.quality = 12;
-    jpgOptions.embedColorProfile = true;
-    jpgOptions.formatOptions = FormatOptions.PROGRESSIVE;
-    if (jpgOptions.formatOptions == FormatOptions.PROGRESSIVE) {
-        jpgOptions.scans = 5
-    };
-    jpgOptions.matte = MatteType.NONE;
-
-    activeDocument.saveAs(new File("/Users/35267/" + fileName), jpgOptions);
-    */
 }
 
 function printSheet() {
-    // TODO Combine the temporary files into a single sheet
-    // There may be up to 6 temporary files (but there could be less).
+    var sheetName = "sheet-" + sheetId;
+    var sheetWidth = 10; // 4 cards wide = 10 inches
+    var sheetHeight = 7; // 2 cards tall = 2 inches
+
+    app.preferences.rulerUnits = Units.INCHES;
+    var sheetDoc = app.documents.add(sheetWidth, sheetHeight, 300, sheetName, NewDocumentMode.RGB);
+    app.preferences.rulerUnits = Units.PIXELS;
+
+    for (var i = 0; i < cardsPerSheet; i++) {
+        if (cardPaths.length > i) {
+            var fileObj = File(cardPaths[i]);
+            if (fileObj.exists) {
+                placeFile(fileObj);
+            }
+        }
+    }
+
+    var fileRef = new File("~/Desktop/sheets/" + sheetName + ".jpg");
+    var jpegOptions = new JPEGSaveOptions();
+    jpegOptions.quality = 12;
+    activeDocument.saveAs(fileRef, jpegOptions, true);
+    sheetDoc.close(SaveOptions.DONOTSAVECHANGES);
+
+    sheetId = sheetId + 1;
 }
+
+function placeFile(file) {
+    var desc21 = new ActionDescriptor();
+    desc21.putPath( charIDToTypeID('null'), new File(file) );
+    desc21.putEnumerated( charIDToTypeID('FTcs'), charIDToTypeID('QCSt'), charIDToTypeID('Qcsa') );
+    var desc22 = new ActionDescriptor();
+    desc22.putUnitDouble( charIDToTypeID('Hrzn'), charIDToTypeID('#Pxl'), 0.000000 );
+    desc22.putUnitDouble( charIDToTypeID('Vrtc'), charIDToTypeID('#Pxl'), 0.000000 );
+    desc21.putObject( charIDToTypeID('Ofst'), charIDToTypeID('Ofst'), desc22 );
+    executeAction( charIDToTypeID('Plc '), desc21, DialogModes.NO );
+}
+
+/*
+function placeFile(file) {
+    var desc1 = new ActionDescriptor();
+    var list1 = new ActionList();
+    var ref1 = new ActionReference();
+    ref1.putName( charIDToTypeID('Lyr '), file );
+    list1.putReference( ref1 );
+    desc1.putList( charIDToTypeID('null'), list1 );
+    executeAction( charIDToTypeID('Hd  '), desc1, DialogModes.NO );
+};
+*/
