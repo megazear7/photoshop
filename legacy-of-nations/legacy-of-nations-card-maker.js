@@ -58,6 +58,7 @@ function createCards() {
         setupCard(card);
         printCard(temporaryIndex);
         temporaryIndex = temporaryIndex + 1;
+        cardId = cardId + 1;
     }
 
     printSheet();
@@ -74,7 +75,7 @@ function buildCards() {
         title: "Spearmen",
         combat: {
             attack: 1,
-            defense: 4 
+            defense: 3 
         },
         cost: [
             { costType: "food", costVal: 2 },
@@ -124,13 +125,16 @@ function createCard(ops) {
 
 function createMilitaryCard(ops) {
     ops = createCard(ops);
-    ops.deckName = {
-        "CARD_TYPES.FOOT"         : "Foot Troop",
-        "CARD_TYPES.MOUNTED"      : "Mounted Troop",
-        "CARD_TYPES.SIEGE_ENGINE" : "Siege Engine"
-    }[ops.cardType];
     ops.placement = PLACEMENTS.ARMY;
+    return ops;
+}
 
+function updateDeckName(ops) {
+    ops.deckName = {
+        "foot_troop"         : "Foot Troop",
+        "mounted_troop"      : "Mounted Troop",
+        "siege_engine" : "Siege Engine"
+    }[ops.cardType];
     return ops;
 }
 
@@ -139,6 +143,7 @@ function createMeleeFootTroop(ops) {
     ops.cardType = CARD_TYPES.FOOT;
     ops.combat.attackType = ATTACK_TYPE.MELEE;
     ops.combat.init = 1;
+    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -148,6 +153,7 @@ function createRangedFootTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 2;
+    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -157,6 +163,7 @@ function createMeleeMountedTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.MELEE;
     ops.combat.init = 3;
+    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -166,6 +173,7 @@ function createRangedMountedTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 1;
+    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -175,6 +183,7 @@ function createSiegeEngineTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 5;
+    ops = updateDeckName(ops);
     return ops;
 }
 
