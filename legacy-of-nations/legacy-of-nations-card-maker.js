@@ -370,8 +370,14 @@ function cleanup() {
 }
 
 function printCard(fileIndex) {
-    var fileName = "legacy-of-nations-temp-file-" + fileIndex;
-    // TODO print the card to a temporary file
+    /*
+    var fileName = "legacy-of-nations-temp-file-" + fileIndex + ".jpg";
+    var fileRef = new File("/Users/35267/Desktop/" + fileName);
+    var jpegOptions = new JPEGSaveOptions();
+    jpegOptions.quality = 12;
+
+    activeDocument.saveAs(fileRef, jpegOptions, true, Extension.LOWERCASE);
+    */
 }
 
 function printSheet() {
