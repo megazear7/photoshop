@@ -14,6 +14,7 @@ var CARD_TYPES = {
     CIVIC_RESEARCH    : "civic",
     COMMERCE_RESEARCH : "commerce",
     SCIENCE_RESEARCH  : "science",
+    START             : "start"
 };
 var PLACEMENTS = {
     NATION   : "nation_placement",
@@ -39,6 +40,8 @@ var attackElement = combatElement.layerSets["attack"];
 var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
 var modElement = elements.layerSets["mod"];
+var backgrounds = elements.layerSets["backgrounds"];
+var bottomModBackground = backgrounds.layers["bottom_mod_background"];
 var cardId = 1;
 var sheetId = 1;
 var cardPaths = [];
@@ -74,7 +77,77 @@ function buildCards() {
     var cards = [];
 
     addCards(cards, 1, createMeleeFootTroop({
-        title: "Spearmen",
+        title: "1 Spearmen",
+        combat: {
+            attack: 1,
+            defense: 3 
+        },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
+        image: IMAGES.DEFAULT,
+        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createMeleeFootTroop({
+        title: "2 Spearmen",
+        combat: {
+            attack: 1,
+            defense: 3 
+        },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
+        image: IMAGES.DEFAULT,
+        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createMeleeFootTroop({
+        title: "3 Spearmen",
+        combat: {
+            attack: 1,
+            defense: 3 
+        },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
+        image: IMAGES.DEFAULT,
+        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createMeleeFootTroop({
+        title: "4 Spearmen",
+        combat: {
+            attack: 1,
+            defense: 3 
+        },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
+        image: IMAGES.DEFAULT,
+        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createMeleeFootTroop({
+        title: "5 Spearmen",
+        combat: {
+            attack: 1,
+            defense: 3 
+        },
+        cost: [
+            { costType: "food", costVal: 2 },
+            { costType: "wood", costVal: 1 }
+        ],
+        image: IMAGES.DEFAULT,
+        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
+    }));
+
+    addCards(cards, 1, createMeleeFootTroop({
+        title: "6 Spearmen",
         combat: {
             attack: 1,
             defense: 3 
@@ -88,7 +161,7 @@ function buildCards() {
     }));
 
     addCards(cards, 1, createCard({
-        title: "Farm",
+        title: "7 Farm",
         placement: PLACEMENTS.NATION,
         cost: [
             { costType: "wood", costVal: 2 }
@@ -98,14 +171,13 @@ function buildCards() {
                 { modType: "food", modVal: 2 },
             ]
         },
-        deckName: "Civic Buildings",
         image: IMAGES.DEFAULT,
         desc: "Farms are fun for picking and planting.",
     }));
 
     addCards(cards, 1, createCard({
         cardType: CARD_TYPES.SCIENCE_RESEARCH,
-        title: "Card Title",
+        title: "8 Card Title",
         placement: PLACEMENTS.NATION,
         combat: {
             init: 1,
@@ -125,13 +197,12 @@ function buildCards() {
                 { modType: "wood", modVal: 3 }
             ]
         },
-        deckName: "Sample Card",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     }));
 
     addCards(cards, 1, createCard({
         cardType: CARD_TYPES.CIVIC_RESEARCH,
-        title: "Card Title",
+        title: "9 Card Title",
         placement: PLACEMENTS.NATION,
         cost: [
             { costType: "food", costVal: 1 },
@@ -144,8 +215,26 @@ function buildCards() {
                 { modType: "iron", modVal: 3 }
             ]
         },
-        deckName: "Sample Card",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "10 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
     }));
 
     return cards;
@@ -166,7 +255,6 @@ function createCard(ops) {
         image: ops.image || IMAGES.DEFAULT,
         cost: ops.cost,
         desc: ops.desc,
-        deckName: ops.deckName,
         mod: ops.mod
     };
 }
@@ -177,21 +265,11 @@ function createMilitaryCard(ops) {
     return ops;
 }
 
-function updateDeckName(ops) {
-    ops.deckName = {
-        "foot_troop"         : "Foot Troop",
-        "mounted_troop"      : "Mounted Troop",
-        "siege_engine" : "Siege Engine"
-    }[ops.cardType];
-    return ops;
-}
-
 function createMeleeFootTroop(ops) {
     ops = createMilitaryCard(ops);
     ops.cardType = CARD_TYPES.FOOT;
     ops.combat.attackType = ATTACK_TYPE.MELEE;
     ops.combat.init = 1;
-    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -201,7 +279,6 @@ function createRangedFootTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 2;
-    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -211,7 +288,6 @@ function createMeleeMountedTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.MELEE;
     ops.combat.init = 3;
-    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -221,7 +297,6 @@ function createRangedMountedTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 1;
-    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -231,7 +306,6 @@ function createSiegeEngineTroop(ops) {
     ops.combat = ops.combat || { };
     ops.combat.attackType = ATTACK_TYPE.RANGED;
     ops.combat.init = 5;
-    ops = updateDeckName(ops);
     return ops;
 }
 
@@ -295,7 +369,7 @@ function updatePlacement() {
 
 function updateInit() {
     return function(card) {
-        if (card.combat) {
+        if (card.combat && card.combat.init > 0) {
             initElement.visible = true;
             initElement.layers["text"].textItem.contents = card.combat.init;
         } else {
@@ -306,7 +380,7 @@ function updateInit() {
 
 function updateAttack() {
     return function(card) {
-        if (card.combat) {
+        if (card.combat && card.combat.attack > 0) {
             attackElement.visible = true;
             attackElement.layers["text"].textItem.contents = card.combat.attack;
             revealOneByName(attackElement.layerSets["symbols"], card.combat.attackType);
@@ -318,7 +392,7 @@ function updateAttack() {
 
 function updateDefense() {
     return function(card) {
-        if (card.combat) {
+        if (card.combat && card.combat.defense > 0) {
             defenseElement.visible = true;
             defenseElement.layers["text"].textItem.contents = card.combat.defense;
         } else {
@@ -352,6 +426,14 @@ function updateCost(pos) {
 function updateMod(loc, count, pos) {
     return function(card) {
         var layerSet = modElement.layerSets[loc].layerSets["mod_"+count+"_"+pos];
+
+        if (loc === MOD.BOTTOM) {
+            if (card.mod && card.mod[loc] && card.mod[loc].length > 0) {
+                bottomModBackground.visible = true;
+            } else {
+                bottomModBackground.visible = false;
+            }
+        }
 
         if (card.mod && card.mod[loc] && count === card.mod[loc].length) {
             var modItem = card.mod[loc][pos-1];
@@ -410,7 +492,6 @@ function cleanup() {
                 { modType: "wood", modVal: 3 }
             ]
         },
-        deckName: "Sample Card",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     }));
 }
@@ -439,6 +520,7 @@ function printSheet() {
             var fileObj = File(cardPaths[i]);
             if (fileObj.exists) {
                 placeFile(fileObj);
+                fileObj.remove();
                 var newLayer = sheetDoc.layers["tmp-" + (i + 1)];
                 moveLayer(newLayer, i+1);
             }
@@ -448,8 +530,9 @@ function printSheet() {
     var fileRef = new File("~/Desktop/sheets/" + sheetName + ".jpg");
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = 12;
-    activeDocument.saveAs(fileRef, jpegOptions, true);
+    sheetDoc.saveAs(fileRef, jpegOptions, true);
     sheetDoc.close(SaveOptions.DONOTSAVECHANGES);
+    app.activeDocument = activeDocument;
 
     sheetId = sheetId + 1;
 }
