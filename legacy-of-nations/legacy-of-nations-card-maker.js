@@ -30,7 +30,6 @@ var elements = activeDocument.layerSets["elements"];
 var textElement = elements.layerSets["text"];
 var titleElement = textElement.layers["title"];
 var descElement = textElement.layers["desc"];
-var cardIdElement = textElement.layers["card_id"];
 var imageElement = elements.layerSets["image"];
 var typeElement = elements.layerSets["type"];
 var placementElement = elements.layerSets["placement"];
@@ -96,12 +95,57 @@ function buildCards() {
         ],
         mod: {
             bottom: [
-                { modType: "food", modVal: "+2" },
+                { modType: "food", modVal: 2 },
             ]
         },
         deckName: "Civic Buildings",
         image: IMAGES.DEFAULT,
         desc: "Farms are fun for picking and planting.",
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.SCIENCE_RESEARCH,
+        title: "Card Title",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 1,
+            attack: 1,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 1,
+        },
+        mod: {
+            middle: [
+                { modType: "food", modVal: 1 },
+                { modType: "wood", modVal: 2 },
+                { modType: "iron", modVal: 3 }
+            ],
+            bottom: [
+                { modType: "knowledge", modVal: 1 },
+                { modType: "iron", modVal: 2 },
+                { modType: "wood", modVal: 3 }
+            ]
+        },
+        deckName: "Sample Card",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.CIVIC_RESEARCH,
+        title: "Card Title",
+        placement: PLACEMENTS.NATION,
+        cost: [
+            { costType: "food", costVal: 1 },
+            { costType: "wealth", costVal: 2 }
+        ],
+        mod: {
+            middle: [
+                { modType: "food", modVal: 1 },
+                { modType: "wood", modVal: 2 },
+                { modType: "iron", modVal: 3 }
+            ]
+        },
+        deckName: "Sample Card",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     }));
 
     return cards;
@@ -204,7 +248,6 @@ function buildElements() {
         updateCost(2),
         updateCost(3),
         updateDesc(),
-        updateId(),
         updateMod(MOD.MIDDLE, 1, 1),
         updateMod(MOD.MIDDLE, 2, 1),
         updateMod(MOD.MIDDLE, 2, 2),
@@ -216,11 +259,7 @@ function buildElements() {
         updateMod(MOD.BOTTOM, 2, 2),
         updateMod(MOD.BOTTOM, 3, 1),
         updateMod(MOD.BOTTOM, 3, 2),
-        updateMod(MOD.BOTTOM, 3, 3),
-        updateMod(MOD.BOTTOM, 4, 1),
-        updateMod(MOD.BOTTOM, 4, 2),
-        updateMod(MOD.BOTTOM, 4, 3),
-        updateMod(MOD.BOTTOM, 4, 4),
+        updateMod(MOD.BOTTOM, 3, 3)
     ];
 }
 
@@ -258,7 +297,7 @@ function updateInit() {
     return function(card) {
         if (card.combat) {
             initElement.visible = true;
-            initElement.layers["text"].textItem.contents = "+" + card.combat.init;
+            initElement.layers["text"].textItem.contents = card.combat.init;
         } else {
             initElement.visible = false;
         }
@@ -269,7 +308,7 @@ function updateAttack() {
     return function(card) {
         if (card.combat) {
             attackElement.visible = true;
-            attackElement.layers["text"].textItem.contents = "+" + card.combat.attack;
+            attackElement.layers["text"].textItem.contents = card.combat.attack;
             revealOneByName(attackElement.layerSets["symbols"], card.combat.attackType);
         } else {
             attackElement.visible = false;
@@ -281,7 +320,7 @@ function updateDefense() {
     return function(card) {
         if (card.combat) {
             defenseElement.visible = true;
-            defenseElement.layers["text"].textItem.contents = "+" + card.combat.defense;
+            defenseElement.layers["text"].textItem.contents = card.combat.defense;
         } else {
             defenseElement.visible = false;
         }
@@ -319,7 +358,7 @@ function updateMod(loc, count, pos) {
             layerSet.visible = true;
 
             revealOneByName(layerSet.layerSets["symbols"], modItem.modType);
-            layerSet.layers["text"].textItem.contents = modItem.modVal;
+            layerSet.layers["text"].textItem.contents = (modItem.modVal < 0 ? '-' : '+') + modItem.modVal;
         } else {
             layerSet.visible = false;
         }
@@ -329,12 +368,6 @@ function updateMod(loc, count, pos) {
 function updateDesc() {
     return function(card) {
         descElement.textItem.contents = card.desc;
-    }
-}
-
-function updateId() {
-    return function(card) {
-        cardIdElement.textItem.contents = "Legacy of Nations - " + card.deckName + " - " + cardId;
     }
 }
 
@@ -374,8 +407,7 @@ function cleanup() {
             bottom: [
                 { modType: "knowledge", modVal: 1 },
                 { modType: "iron", modVal: 2 },
-                { modType: "wood", modVal: 3 },
-                { modType: "wealth", modVal: 4 }
+                { modType: "wood", modVal: 3 }
             ]
         },
         deckName: "Sample Card",
