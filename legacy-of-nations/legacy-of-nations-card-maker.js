@@ -55,9 +55,9 @@ function createCards() {
 
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
-        if (temporaryIndex >= cardsPerSheet) {
+        if ((temporaryIndex-1) >= cardsPerSheet) {
             printSheet();
-            temporaryIndex = 0;
+            temporaryIndex = 1;
         }
 
         setupCard(card);
@@ -221,6 +221,196 @@ function buildCards() {
     addCards(cards, 1, createCard({
         cardType: CARD_TYPES.START,
         title: "10 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "11 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "12 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "13 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "14 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "15 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "16 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "17 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "18 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "19 Rome",
+        placement: PLACEMENTS.NATION,
+        combat: {
+            init: 0,
+            attack: 0,
+            attackType: ATTACK_TYPE.MELEE,
+            defense: 20,
+        },
+        mod: {
+            middle: [
+                { modType: "iron", modVal: 1 },
+                { modType: "wealth", modVal: 1 }
+            ]
+        },
+        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
+    }));
+
+    addCards(cards, 1, createCard({
+        cardType: CARD_TYPES.START,
+        title: "20 Rome",
         placement: PLACEMENTS.NATION,
         combat: {
             init: 0,
@@ -463,8 +653,6 @@ function setupCard(card) {
 }
 
 function cleanup() {
-    // TODO remove temporary files
-
     setupCard(createCard({
         cardType: CARD_TYPES.SCIENCE_RESEARCH,
         title: "Card Title",
