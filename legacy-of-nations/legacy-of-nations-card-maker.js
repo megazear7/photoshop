@@ -25,6 +25,9 @@ var PLACEMENTS = {
 var IMAGES = {
     DEFAULT : "default",
 }
+
+var symbols = app.activeDocument.layerSets.getByName('symbols');
+var copiedSymbols = app.activeDocument.layerSets.getByName('copied_symbols');
 var elementLayer = app.activeDocument.layers.getByName('elements');
 var activeDocument = app.activeDocument;
 var elements = activeDocument.layerSets["elements"];
@@ -40,6 +43,8 @@ var attackElement = combatElement.layerSets["attack"];
 var defenseElement = combatElement.layerSets["defense"];
 var costElement = elements.layerSets["cost"];
 var modElement = elements.layerSets["mod"];
+var modMiddleElement = modElement.layerSets["middle"];
+var modBottomElement = modElement.layerSets["bottom"];
 var backgrounds = elements.layerSets["backgrounds"];
 var bottomModBackground = backgrounds.layers["bottom_mod_background"];
 var cardId = 1;
@@ -50,6 +55,7 @@ var cardsPerSheet = 8;
 createCards();
 
 function createCards() {
+    cleanup();
     var cards = buildCards();
     var temporaryIndex = 1;
 
@@ -62,6 +68,7 @@ function createCards() {
 
         setupCard(card);
         printCard(temporaryIndex);
+        cleanup();
         temporaryIndex = temporaryIndex + 1;
         cardId = cardId + 1;
     }
@@ -539,6 +546,16 @@ function revealOneByName(group, layerName) {
     }
 }
 
+function copyToReference(symbolName, locRef) {
+    var symbolRef = symbols.layers[symbolName];
+    var copiedSymbol = symbolRef.duplicate(copiedSymbols, ElementPlacement.PLACEATEND);
+    var refBounds = locRef.bounds;
+    var copiedBounds = copiedSymbol.bounds;
+    copiedSymbol.translate(refBounds[0] - copiedBounds[0], refBounds[1] - copiedBounds[1]);
+    copiedSymbol.visible = true;
+    locRef.visible = false;
+}
+
 function updateCardType() {
     return function(card) {
         revealOneByName(typeElement, card.cardType);
@@ -605,7 +622,7 @@ function updateCost(pos) {
             var costItem = card.cost[pos-1];
             costPosElement.visible = true;
 
-            revealOneByName(costPosElement.layerSets["symbols"], costItem.costType);
+            copyToReference(costItem.costType, costPosElement.layers["loc_ref"]);
             costPosElement.layers["text"].textItem.contents = costItem.costVal;
         } else {
             costPosElement.visible = false;
@@ -629,7 +646,7 @@ function updateMod(loc, count, pos) {
             var modItem = card.mod[loc][pos-1];
             layerSet.visible = true;
 
-            revealOneByName(layerSet.layerSets["symbols"], modItem.modType);
+            copyToReference(modItem.modType, layerSet.layers["loc_ref"]);
             layerSet.layers["text"].textItem.contents = (modItem.modVal < 0 ? '-' : '+') + modItem.modVal;
         } else {
             layerSet.visible = false;
@@ -653,35 +670,57 @@ function setupCard(card) {
 }
 
 function cleanup() {
-    setupCard(createCard({
-        cardType: CARD_TYPES.SCIENCE_RESEARCH,
-        title: "Card Title",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 1,
-            attack: 1,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 1,
-        },
-        cost: [
-            { costType: "food", costVal: 1 },
-            { costType: "wealth", costVal: 2 },
-            { costType: "iron", costVal: 3 }
-        ],
-        mod: {
-            middle: [
-                { modType: "food", modVal: 1 },
-                { modType: "wood", modVal: 2 },
-                { modType: "iron", modVal: 3 }
-            ],
-            bottom: [
-                { modType: "knowledge", modVal: 1 },
-                { modType: "iron", modVal: 2 },
-                { modType: "wood", modVal: 3 }
-            ]
-        },
-        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    }));
+    titleElement.textItem.contents = "Example title"
+    descElement.textItem.contents = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    
+    var layersToRemove = [];
+    for (var i = 0; i < copiedSymbols.layers.length; i++) {
+        layersToRemove.push(copiedSymbols.layers[i]);
+    }
+    for (var i = 0; i < layersToRemove.length; i++) {
+        layersToRemove[i].remove();
+    }
+
+    for (var i = 0; i < costElement.layerSets.length; i++) {
+        var group = costElement.layerSets[i];
+        group.visible = true;
+        group.layers["loc_ref"].visible = true;
+        group.layers["text"].textItem.contents = "1";
+    }
+
+    revealOneByName(placementElement, PLACEMENTS.NATION);
+    revealOneByName(typeElement, CARD_TYPES.SCIENCE_RESEARCH);
+
+    initElement.visible = true;
+    attackElement.visible = true;
+    defenseElement.visible = true;
+    initElement.layers["text"].textItem.contents = "1";
+    defenseElement.layers["text"].textItem.contents = "1";
+    attackElement.layers["text"].textItem.contents = "1";
+    attackElement.layerSets["symbols"].layers["melee"].visible = true;
+    attackElement.layerSets["symbols"].layers["ranged"].visible = false;
+
+    bottomModBackground.visible = true;
+    var mods = [ modBottomElement, modMiddleElement ];
+    for (var i = 0; i < mods.length; i ++) {
+        var modPos = ["mod_3_1", "mod_3_2", "mod_3_3"]
+        for (var j = 0; j < modPos.length; j++) {
+            var modPosElement = mods[i].layerSets[modPos[j]];
+            modPosElement.visible = true;
+            modPosElement.layers["loc_ref"].visible = true;
+            modPosElement.layers["text"].textItem.contents = "+1";
+        }
+
+        var hideModPos = ["mod_1_1", "mod_2_1", "mod_2_2"]
+        for (var j = 0; j < hideModPos.length; j++) {
+            var modPosElement = mods[i].layerSets[hideModPos[j]];
+            modPosElement.visible = false;
+            modPosElement.layers["loc_ref"].visible = true;
+            modPosElement.layers["text"].textItem.contents = "+1";
+        }
+    }
+
+    symbols.visible = false;
 }
 
 function printCard(fileIndex) {
