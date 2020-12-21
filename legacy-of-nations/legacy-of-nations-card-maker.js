@@ -287,8 +287,10 @@ function updateDesc() {
     return function(card) {
         if (card.desc) {
             descBackground.visible = true;
+            descElement.visible = true;
             descElement.textItem.contents = card.desc;
         } else {
+            descElement.visible = false;
             descBackground.visible = false;
         }
     }

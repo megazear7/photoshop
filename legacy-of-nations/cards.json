@@ -78,8 +78,52 @@
             ]
         },
         "desc": "The unpredictable Tigris and Euphrates rivers can cause havoc, but also drive inventive cultivation methods."
-    },
-    {
+    }, {
+        "cardType": "military",
+        "title": "Forges",
+        "placement": "research",
+        "image": "default",
+        "cost": [
+            { "costType": "wealth", "costVal": 3 },
+            { "costType": "iron", "costVal": 3 }
+        ],
+        "mod": {
+            "bottom": [
+                { "modType": "population", "modVal": 3 }
+            ]
+        },
+        "desc": "Forges increase the rate of production of weapons and armor; making it easier to deploy larger and better equiped armies."
+    }, {
+        "cardType": "civic",
+        "title": "Paving",
+        "placement": "research",
+        "image": "default",
+        "cost": [
+            { "costType": "wealth", "costVal": 2 },
+            { "costType": "food", "costVal": 4 }
+        ],
+        "mod": {
+            "bottom": [
+                { "modType": "city", "modVal": 1 }
+            ]
+        },
+        "desc": "Paving made for longer lasting city roads that could impress even the richest foreign diplomats."
+    }, {
+        "cardType": "commerce",
+        "title": "Toll roads",
+        "placement": "research",
+        "image": "default",
+        "cost": [
+            { "costType": "wealth", "costVal": 1 },
+            { "costType": "wood", "costVal": 4 }
+        ],
+        "mod": {
+            "bottom": [
+                { "modType": "upkeep", "modVal": 2 }
+            ]
+        },
+        "desc": "Toll roads increased the revenue of the state, allowing them to profit off of the mercentile exchange of it's people."
+    }, {
         "cardType": "science",
         "title": "Codex",
         "placement": "research",
@@ -93,9 +137,8 @@
                 { "modType": "increase_hand_limit", "modVal": 1 }
             ]
         },
-        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
-    },
-    {
+        "desc": "The codex eventually replaced the scroll as the default writing format. It allowed for easier access to the middle and end of the document."
+    }, {
         "cardType": "foot",
         "title": "Spearmen",
         "placement": "army",
