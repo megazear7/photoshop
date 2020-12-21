@@ -47,6 +47,9 @@ var modMiddleElement = modElement.layerSets["middle"];
 var modBottomElement = modElement.layerSets["bottom"];
 var backgrounds = elements.layerSets["backgrounds"];
 var bottomModBackground = backgrounds.layers["bottom_mod_background"];
+var middleModBackground = backgrounds.layers["middle_mod_background"];
+var costBackground = backgrounds.layers["cost_background"];
+var combatBackground = backgrounds.layers["combat_background"];
 var cardId = 1;
 var sheetId = 1;
 var cardPaths = [];
@@ -511,6 +514,8 @@ function buildElements() {
         updateCardType(),
         updateTitle(),
         updatePlacement(),
+        updateCombatBackground(),
+        updateCostBackground(),
         updateInit(),
         updateAttack(),
         updateDefense(),
@@ -574,6 +579,16 @@ function updatePlacement() {
     }
 }
 
+function updateCombatBackground() {
+    return function(card) {
+        if (card.combat) {
+            combatBackground.visible = true;
+        } else {
+            combatBackground.visible = false;
+        }
+    }
+}
+
 function updateInit() {
     return function(card) {
         if (card.combat && card.combat.init > 0) {
@@ -614,6 +629,16 @@ function updateImage() {
     }
 }
 
+function updateCostBackground() {
+    return function(card) {
+        if (card.cost) {
+            costBackground.visible = true;
+        } else {
+            costBackground.visible = false;
+        }
+    }
+}
+
 function updateCost(pos) {
     return function(card) {
         var costPosElement = costElement.layerSets["cost_" + pos];
@@ -640,6 +665,12 @@ function updateMod(loc, count, pos) {
             } else {
                 bottomModBackground.visible = false;
             }
+        } else if (loc === MOD.MIDDLE) {
+            if (card.mod && card.mod[loc] && card.mod[loc].length > 0) {
+                middleModBackground.visible = true;
+            } else {
+                middleModBackground.visible = false;
+            }
         }
 
         if (card.mod && card.mod[loc] && count === card.mod[loc].length) {
@@ -647,7 +678,7 @@ function updateMod(loc, count, pos) {
             layerSet.visible = true;
 
             copyToReference(modItem.modType, layerSet.layers["loc_ref"]);
-            layerSet.layers["text"].textItem.contents = (modItem.modVal < 0 ? '-' : '+') + modItem.modVal;
+            layerSet.layers["text"].textItem.contents = modItem.modVal;
         } else {
             layerSet.visible = false;
         }
@@ -708,7 +739,7 @@ function cleanup() {
             var modPosElement = mods[i].layerSets[modPos[j]];
             modPosElement.visible = true;
             modPosElement.layers["loc_ref"].visible = true;
-            modPosElement.layers["text"].textItem.contents = "+1";
+            modPosElement.layers["text"].textItem.contents = "1";
         }
 
         var hideModPos = ["mod_1_1", "mod_2_1", "mod_2_2"]
@@ -716,7 +747,7 @@ function cleanup() {
             var modPosElement = mods[i].layerSets[hideModPos[j]];
             modPosElement.visible = false;
             modPosElement.layers["loc_ref"].visible = true;
-            modPosElement.layers["text"].textItem.contents = "+1";
+            modPosElement.layers["text"].textItem.contents = "1";
         }
     }
 
