@@ -1,23 +1,10 @@
 [
     {
-        "cardType": "foot",
-        "title": "Spearmen",
-        "placement": "army",
-        "combat": {
-            "attack": 1,
-            "attackType": "melee",
-            "defense": 3 
-        },
-        "cost": [
-            { "costType": "food", "costVal": 2 },
-            { "costType": "wood", "costVal": 1 }
-        ],
-        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
-    }, {
         "cardType": "city",
         "title": "Rome",
         "subTitle": "Rome - Starting City",
         "placement": "nation",
+        "image": "rome",
         "combat": {
             "defense": 20
         },
@@ -33,8 +20,9 @@
         "title": "Roman Fort",
         "subTitle": "Rome - Starting Fort",
         "placement": "nation",
+        "image": "rome",
         "combat": {
-            "attack": 1,
+            "attack": 2,
             "attackType": "ranged",
             "defense": 8
         },
@@ -44,11 +32,66 @@
         "title": "Etruscan Country Side",
         "subTitle": "Rome - Starting Land",
         "placement": "nation",
+        "image": "rome",
         "mod": {
             "middle": [
                 { "modType": "food", "modVal": 1 }
             ]
         },
         "desc": "The mild medditeranean climate of the etruscan country side provided rome with many supplies."
+    }, {
+        "cardType": "city",
+        "title": "Uruk",
+        "subTitle": "Sumerian - Starting City",
+        "placement": "nation",
+        "image": "sumeria",
+        "combat": {
+            "defense": 14
+        },
+        "mod": {
+            "middle": [
+                { "modType": "knowledge", "modVal": 1 }
+            ]
+        },
+        "desc": "The first city; the birth of civilization; wrapped in myth, draped in the first glories of man."
+    }, {
+        "cardType": "fortification",
+        "title": "The First Walls",
+        "subTitle": "Sumerian - Starting Fort",
+        "placement": "nation",
+        "image": "sumeria",
+        "combat": {
+            "attack": 1,
+            "attackType": "ranged",
+            "defense": 10
+        },
+        "desc": "Sumeria is home to the first cities ever constructed. From their prehistorical origins these cities requires high walls to protect their inhabitants."
+    }, {
+        "cardType": "land",
+        "title": "The Fertile Cresent",
+        "subTitle": "Sumerian - Starting Land",
+        "placement": "nation",
+        "image": "sumeria",
+        "mod": {
+            "middle": [
+                { "modType": "food", "modVal": 3 }
+            ]
+        },
+        "desc": "The unpredictable Tigris and Euphrates rivers can cause havoc, but also drive inventive cultivation methods."
+    },
+    {
+        "cardType": "foot",
+        "title": "Spearmen",
+        "placement": "army",
+        "image": "default",
+        "combat": {
+            "attack": 1,
+            "attackType": "melee",
+            "defense": 3 
+        },
+        "cost": [
+            { "costType": "food", "costVal": 1 }
+        ],
+        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
     }
 ]
