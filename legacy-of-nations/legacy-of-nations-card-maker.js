@@ -60,8 +60,10 @@ var sheetId = 1;
 var cardPaths = [];
 var cardsPerSheet = 8;
 var cards = $.evalFile(activeDocument.path.fullName + "/" + cardFile);
+var singleCard = $.evalFile(activeDocument.path.fullName + "/" + "single-card.json")[0];
 
 createCards();
+//createSingleCard();
 
 function createCards() {
     cleanup();
@@ -83,6 +85,19 @@ function createCards() {
         }
 
         printSheet();
+    } finally {
+        cleanup();
+    }
+
+    alert("Creation complete");
+}
+
+function createSingleCard() {
+    cleanup();
+
+    try {
+        setupCard(singleCard);
+        printCard(0, "~/Desktop/card.jpg");
     } finally {
         cleanup();
     }
@@ -361,11 +376,11 @@ function cleanup() {
     symbols.visible = false;
 }
 
-function printCard(fileIndex) {
+function printCard(fileIndex, path) {
     var fileName = "tmp-" + fileIndex + ".jpg";
 
     cardPaths[fileIndex-1] = activeDocument.path.fullName + "/tmp/" + fileName;
-    var fileRef = new File(cardPaths[fileIndex-1]);
+    var fileRef = new File(path ? path : cardPaths[fileIndex-1]);
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = 12;
     activeDocument.saveAs(fileRef, jpegOptions, true);

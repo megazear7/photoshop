@@ -1,0 +1,16 @@
+[
+    {
+        "cardType": "city",
+        "title": "Uruk",
+        "subTitle": "Sumerian - Starting City",
+        "placement": "nation",
+        "image": "sumeria",
+        "combat": {
+            "defense": 14
+        },
+        "mod": {
+            "middle": [ "knowledge" ]
+        },
+        "desc": "The first city; the birth of civilization; wrapped in myth, draped in the first glories of man."
+    }
+]
