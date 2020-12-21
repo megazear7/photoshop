@@ -1,0 +1,54 @@
+[
+    {
+        "cardType": "foot",
+        "title": "Spearmen",
+        "placement": "army",
+        "combat": {
+            "attack": 1,
+            "attackType": "melee",
+            "defense": 3 
+        },
+        "cost": [
+            { "costType": "food", "costVal": 2 },
+            { "costType": "wood", "costVal": 1 }
+        ],
+        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
+    }, {
+        "cardType": "city",
+        "title": "Rome",
+        "subTitle": "Rome - Starting City",
+        "placement": "nation",
+        "combat": {
+            "defense": 20
+        },
+        "mod": {
+            "middle": [
+                { "modType": "iron", "modVal": 1 },
+                { "modType": "wealth", "modVal": 1 }
+            ]
+        },
+        "desc": "Rome, the Eternal City. Might of the Great Empire. The seat of emperors and popes."
+    }, {
+        "cardType": "fortification",
+        "title": "Roman Fort",
+        "subTitle": "Rome - Starting Fort",
+        "placement": "nation",
+        "combat": {
+            "attack": 1,
+            "attackType": "ranged",
+            "defense": 8
+        },
+        "desc": "Wooden forts are quick to build and provide enough protection to disuade enemy raids."
+    }, {
+        "cardType": "land",
+        "title": "Etruscan Country Side",
+        "subTitle": "Rome - Starting Land",
+        "placement": "nation",
+        "mod": {
+            "middle": [
+                { "modType": "food", "modVal": 1 }
+            ]
+        },
+        "desc": "The mild medditeranean climate of the etruscan country side provided rome with many supplies."
+    }
+]

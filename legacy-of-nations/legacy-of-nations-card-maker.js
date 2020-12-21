@@ -1,3 +1,5 @@
+var cards = $.evalFile(activeDocument.path.fullName + "/cards.json");
+
 var MOD = {
     MIDDLE : "middle",
     BOTTOM : "bottom"
@@ -7,8 +9,8 @@ var ATTACK_TYPE = {
     RANGED : "ranged"
 };
 var CARD_TYPES = {
-    FOOT              : "foot_troop",
-    MOUNTED           : "mounted_troop",
+    FOOT              : "foot",
+    MOUNTED           : "mounted",
     SIEGE_ENGINE      : "siege_engine",
     MILITARY_RESEARCH : "military",
     CIVIC_RESEARCH    : "civic",
@@ -17,10 +19,10 @@ var CARD_TYPES = {
     START             : "start"
 };
 var PLACEMENTS = {
-    NATION   : "nation_placement",
-    BUILDING : "building_placement",
-    RESEARCH : "research_placement",
-    ARMY     : "army_placement",
+    NATION   : "nation",
+    BUILDING : "building",
+    RESEARCH : "research",
+    ARMY     : "army",
 };
 var IMAGES = {
     DEFAULT : "default",
@@ -33,6 +35,7 @@ var activeDocument = app.activeDocument;
 var elements = activeDocument.layerSets["elements"];
 var textElement = elements.layerSets["text"];
 var titleElement = textElement.layers["title"];
+var subTitleElement = textElement.layers["sub_title"];
 var descElement = textElement.layers["desc"];
 var imageElement = elements.layerSets["image"];
 var typeElement = elements.layerSets["type"];
@@ -60,7 +63,6 @@ createCards();
 
 function createCards() {
     cleanup();
-    var cards = buildCards();
     var temporaryIndex = 1;
 
     for (var i = 0; i < cards.length; i++) {
@@ -82,438 +84,11 @@ function createCards() {
     alert("Creation complete");
 }
 
-function buildCards() {
-    // TODO Add all the cards for the game.
-
-    var cards = [];
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "1 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "2 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "3 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "4 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "5 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createMeleeFootTroop({
-        title: "6 Spearmen",
-        combat: {
-            attack: 1,
-            defense: 3 
-        },
-        cost: [
-            { costType: "food", costVal: 2 },
-            { costType: "wood", costVal: 1 }
-        ],
-        image: IMAGES.DEFAULT,
-        desc: "Spearmen are defensive minded troops that can soak up a lot of damage.",
-    }));
-
-    addCards(cards, 1, createCard({
-        title: "7 Farm",
-        placement: PLACEMENTS.NATION,
-        cost: [
-            { costType: "wood", costVal: 2 }
-        ],
-        mod: {
-            bottom: [
-                { modType: "food", modVal: 2 },
-            ]
-        },
-        image: IMAGES.DEFAULT,
-        desc: "Farms are fun for picking and planting.",
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.SCIENCE_RESEARCH,
-        title: "8 Card Title",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 1,
-            attack: 1,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 1,
-        },
-        mod: {
-            middle: [
-                { modType: "food", modVal: 1 },
-                { modType: "wood", modVal: 2 },
-                { modType: "iron", modVal: 3 }
-            ],
-            bottom: [
-                { modType: "knowledge", modVal: 1 },
-                { modType: "iron", modVal: 2 },
-                { modType: "wood", modVal: 3 }
-            ]
-        },
-        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.CIVIC_RESEARCH,
-        title: "9 Card Title",
-        placement: PLACEMENTS.NATION,
-        cost: [
-            { costType: "food", costVal: 1 },
-            { costType: "wealth", costVal: 2 }
-        ],
-        mod: {
-            middle: [
-                { modType: "food", modVal: 1 },
-                { modType: "wood", modVal: 2 },
-                { modType: "iron", modVal: 3 }
-            ]
-        },
-        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "10 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "11 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "12 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "13 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "14 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "15 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "16 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "17 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "18 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "19 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    addCards(cards, 1, createCard({
-        cardType: CARD_TYPES.START,
-        title: "20 Rome",
-        placement: PLACEMENTS.NATION,
-        combat: {
-            init: 0,
-            attack: 0,
-            attackType: ATTACK_TYPE.MELEE,
-            defense: 20,
-        },
-        mod: {
-            middle: [
-                { modType: "iron", modVal: 1 },
-                { modType: "wealth", modVal: 1 }
-            ]
-        },
-        desc: "Rome. The eternal city. Might of the Roman Empire, the seat of emperors and popes."
-    }));
-
-    return cards;
-}
-
-function addCards(cards, count, card) {
-    for (var i = 0; i < count; i++) {
-        cards.push(card);
-    }
-}
-
-function createCard(ops) {
-    return {
-        cardType: ops.cardType,
-        title: ops.title,
-        placement: ops.placement,
-        combat : ops.combat,
-        image: ops.image || IMAGES.DEFAULT,
-        cost: ops.cost,
-        desc: ops.desc,
-        mod: ops.mod
-    };
-}
-
-function createMilitaryCard(ops) {
-    ops = createCard(ops);
-    ops.placement = PLACEMENTS.ARMY;
-    return ops;
-}
-
-function createMeleeFootTroop(ops) {
-    ops = createMilitaryCard(ops);
-    ops.cardType = CARD_TYPES.FOOT;
-    ops.combat.attackType = ATTACK_TYPE.MELEE;
-    ops.combat.init = 1;
-    return ops;
-}
-
-function createRangedFootTroop(ops) {
-    ops = createMilitaryCard(ops);
-    ops.cardType = CARD_TYPES.FOOT;
-    ops.combat = ops.combat || { };
-    ops.combat.attackType = ATTACK_TYPE.RANGED;
-    ops.combat.init = 2;
-    return ops;
-}
-
-function createMeleeMountedTroop(ops) {
-    ops = createMilitaryCard(ops);
-    ops.cardType = CARD_TYPES.MOUNTED;
-    ops.combat = ops.combat || { };
-    ops.combat.attackType = ATTACK_TYPE.MELEE;
-    ops.combat.init = 3;
-    return ops;
-}
-
-function createRangedMountedTroop(ops) {
-    ops = createMilitaryCard(ops);
-    ops.cardType = CARD_TYPES.MOUNTED;
-    ops.combat = ops.combat || { };
-    ops.combat.attackType = ATTACK_TYPE.RANGED;
-    ops.combat.init = 1;
-    return ops;
-}
-
-function createSiegeEngineTroop(ops) {
-    ops = createMilitaryCard(ops);
-    ops.cardType = CARD_TYPES.SIEGE_ENGINE;
-    ops.combat = ops.combat || { };
-    ops.combat.attackType = ATTACK_TYPE.RANGED;
-    ops.combat.init = 5;
-    return ops;
-}
-
 function buildElements() {
     return [
         updateCardType(),
         updateTitle(),
+        updateSubTitle(),
         updatePlacement(),
         updateCombatBackground(),
         updateCostBackground(),
@@ -570,7 +145,23 @@ function updateCardType() {
 
 function updateTitle() {
     return function(card) {
-        titleElement.textItem.contents = card.title;
+        if (card.title) {
+            titleElement.visible = true;
+            titleElement.textItem.contents = card.title;
+        } else {
+            titleElement.visible = false;
+        }
+    }
+}
+
+function updateSubTitle() {
+    return function(card) {
+        if (card.subTitle) {
+            subTitleElement.visible = true;
+            subTitleElement.textItem.contents = card.subTitle;
+        } else {
+            subTitleElement.visible = false;
+        }
     }
 }
 
@@ -626,7 +217,7 @@ function updateDefense() {
 
 function updateImage() {
     return function(card) {
-        revealOneByName(imageElement, card.image);
+        revealOneByName(imageElement, card.image || "default");
     }
 }
 
@@ -725,6 +316,7 @@ function cleanup() {
         group.layers["text"].textItem.contents = "20";
     }
 
+    revealOneByName(imageElement, "default");
     revealOneByName(placementElement, PLACEMENTS.NATION);
     revealOneByName(typeElement, CARD_TYPES.SCIENCE_RESEARCH);
 
