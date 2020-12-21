@@ -1,4 +1,5 @@
-var cards = $.evalFile(activeDocument.path.fullName + "/cards.json");
+var cardFile = "cards.json";
+//var cardFile = "test_cards.json";
 
 var MOD = {
     MIDDLE : "middle",
@@ -58,29 +59,34 @@ var cardId = 1;
 var sheetId = 1;
 var cardPaths = [];
 var cardsPerSheet = 8;
+var cards = $.evalFile(activeDocument.path.fullName + "/" + cardFile);
 
 createCards();
 
 function createCards() {
     cleanup();
-    var temporaryIndex = 1;
 
-    for (var i = 0; i < cards.length; i++) {
-        var card = cards[i];
-        if ((temporaryIndex-1) >= cardsPerSheet) {
-            printSheet();
-            temporaryIndex = 1;
+    try {
+        var temporaryIndex = 1;
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            if ((temporaryIndex-1) >= cardsPerSheet) {
+                printSheet();
+                temporaryIndex = 1;
+            }
+
+            setupCard(card);
+            printCard(temporaryIndex);
+            cleanup();
+            temporaryIndex = temporaryIndex + 1;
+            cardId = cardId + 1;
         }
 
-        setupCard(card);
-        printCard(temporaryIndex);
+        printSheet();
+    } finally {
         cleanup();
-        temporaryIndex = temporaryIndex + 1;
-        cardId = cardId + 1;
     }
 
-    printSheet();
-    cleanup();
     alert("Creation complete");
 }
 

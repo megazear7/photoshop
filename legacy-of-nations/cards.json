@@ -80,6 +80,22 @@
         "desc": "The unpredictable Tigris and Euphrates rivers can cause havoc, but also drive inventive cultivation methods."
     },
     {
+        "cardType": "science",
+        "title": "Codex",
+        "placement": "research",
+        "image": "default",
+        "cost": [
+            { "costType": "wealth", "costVal": 2 },
+            { "costType": "wood", "costVal": 2 }
+        ],
+        "mod": {
+            "bottom": [
+                { "modType": "increase_hand_limit", "modVal": 1 }
+            ]
+        },
+        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
+    },
+    {
         "cardType": "foot",
         "title": "Spearmen",
         "placement": "army",
