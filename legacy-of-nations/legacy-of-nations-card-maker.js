@@ -275,8 +275,7 @@ function updateMod(loc, count, pos) {
             var modItem = card.mod[loc][pos-1];
             layerSet.visible = true;
 
-            copyToReference(modItem.modType, layerSet.layers["loc_ref"]);
-            layerSet.layers["text"].textItem.contents = modItem.modVal;
+            copyToReference(modItem, layerSet.layers["loc_ref"]);
         } else {
             layerSet.visible = false;
         }
@@ -306,7 +305,8 @@ function setupCard(card) {
 }
 
 function cleanup() {
-    titleElement.textItem.contents = "Example title"
+    titleElement.textItem.contents = "Example Title"
+    subTitleElement.textItem.contents = "Sub Title"
     descElement.textItem.contents = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     
     var layersToRemove = [];
@@ -348,7 +348,6 @@ function cleanup() {
             var modPosElement = mods[i].layerSets[modPos[j]];
             modPosElement.visible = true;
             modPosElement.layers["loc_ref"].visible = true;
-            modPosElement.layers["text"].textItem.contents = "1";
         }
 
         var hideModPos = ["mod_1_1", "mod_2_1", "mod_2_2"]
@@ -356,7 +355,6 @@ function cleanup() {
             var modPosElement = mods[i].layerSets[hideModPos[j]];
             modPosElement.visible = false;
             modPosElement.layers["loc_ref"].visible = true;
-            modPosElement.layers["text"].textItem.contents = "1";
         }
     }
 

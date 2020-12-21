@@ -9,10 +9,7 @@
             "defense": 20
         },
         "mod": {
-            "middle": [
-                { "modType": "iron", "modVal": 1 },
-                { "modType": "wealth", "modVal": 1 }
-            ]
+            "middle": [ "iron",  "wealth" ]
         },
         "desc": "Rome, the Eternal City. Might of the Great Empire. The seat of emperors and popes."
     }, {
@@ -22,6 +19,7 @@
         "placement": "nation",
         "image": "rome",
         "combat": {
+            "init": 6,
             "attack": 2,
             "attackType": "ranged",
             "defense": 8
@@ -34,9 +32,7 @@
         "placement": "nation",
         "image": "rome",
         "mod": {
-            "middle": [
-                { "modType": "food", "modVal": 1 }
-            ]
+            "middle": [ "food" ]
         },
         "desc": "The mild medditeranean climate of the etruscan country side provided rome with many supplies."
     }, {
@@ -49,9 +45,7 @@
             "defense": 14
         },
         "mod": {
-            "middle": [
-                { "modType": "knowledge", "modVal": 1 }
-            ]
+            "middle": [ "knowledge" ]
         },
         "desc": "The first city; the birth of civilization; wrapped in myth, draped in the first glories of man."
     }, {
@@ -61,6 +55,7 @@
         "placement": "nation",
         "image": "sumeria",
         "combat": {
+            "init": 6,
             "attack": 1,
             "attackType": "ranged",
             "defense": 10
@@ -73,9 +68,7 @@
         "placement": "nation",
         "image": "sumeria",
         "mod": {
-            "middle": [
-                { "modType": "food", "modVal": 3 }
-            ]
+            "middle": [ "food", "food", "food" ]
         },
         "desc": "The unpredictable Tigris and Euphrates rivers can cause havoc, but also drive inventive cultivation methods."
     }, {
@@ -88,9 +81,7 @@
             { "costType": "iron", "costVal": 3 }
         ],
         "mod": {
-            "bottom": [
-                { "modType": "population", "modVal": 3 }
-            ]
+            "bottom": [ "population" ]
         },
         "desc": "Forges increase the rate of production of weapons and armor; making it easier to deploy larger and better equiped armies."
     }, {
@@ -103,9 +94,7 @@
             { "costType": "food", "costVal": 4 }
         ],
         "mod": {
-            "bottom": [
-                { "modType": "city", "modVal": 1 }
-            ]
+            "bottom": [ "city" ]
         },
         "desc": "Paving made for longer lasting city roads that could impress even the richest foreign diplomats."
     }, {
@@ -118,9 +107,7 @@
             { "costType": "wood", "costVal": 4 }
         ],
         "mod": {
-            "bottom": [
-                { "modType": "upkeep", "modVal": 2 }
-            ]
+            "bottom": [ "upkeep" ]
         },
         "desc": "Toll roads increased the revenue of the state, allowing them to profit off of the mercentile exchange of it's people."
     }, {
@@ -133,17 +120,63 @@
             { "costType": "wood", "costVal": 2 }
         ],
         "mod": {
-            "bottom": [
-                { "modType": "increase_hand_limit", "modVal": 1 }
-            ]
+            "bottom": [ "increase_hand_limit" ]
         },
         "desc": "The codex eventually replaced the scroll as the default writing format. It allowed for easier access to the middle and end of the document."
+    }, {
+        "cardType": "farm",
+        "title": "Farm",
+        "placement": "building",
+        "image": "default",
+        "cost": [
+            { "costType": "wood", "costVal": 2 }
+        ],
+        "mod": {
+            "bottom": [ "food", "food" ]
+        }
+    }, {
+        "cardType": "lumber_mill",
+        "title": "Lumber Mill",
+        "placement": "building",
+        "image": "default",
+        "cost": [
+            { "costType": "food", "costVal": 2 }
+        ],
+        "mod": {
+            "bottom": [ "wood", "wood" ]
+        }
+    }, {
+        "cardType": "mine",
+        "title": "Mine",
+        "placement": "building",
+        "image": "default",
+        "cost": [
+            { "costType": "food", "costVal": 1 },
+            { "costType": "wood", "costVal": 1 }
+        ],
+        "mod": {
+            "bottom": [ "iron", "iron" ]
+        }
+    }, {
+        "cardType": "market",
+        "title": "Market",
+        "placement": "building",
+        "image": "default",
+        "cost": [
+            { "costType": "food", "costVal": 2 },
+            { "costType": "wood", "costVal": 1 },
+            { "costType": "iron", "costVal": 1 }
+        ],
+        "mod": {
+            "bottom": [ "wealth", "wealth" ]
+        }
     }, {
         "cardType": "foot",
         "title": "Spearmen",
         "placement": "army",
         "image": "default",
         "combat": {
+            "init": 4,
             "attack": 1,
             "attackType": "melee",
             "defense": 3 
@@ -152,5 +185,51 @@
             { "costType": "food", "costVal": 1 }
         ],
         "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
+    }, {
+        "cardType": "foot",
+        "title": "Archer",
+        "placement": "army",
+        "image": "default",
+        "combat": {
+            "init": 2,
+            "attack": 3,
+            "attackType": "ranged",
+            "defense": 4
+        },
+        "cost": [
+            { "costType": "wealth", "costVal": 2 }
+        ],
+        "desc": "Archers are trained to deliver a rain of arrows upon the enemy forces. They are especially good at countering mounted melee troops such as knights."
+    }, {
+        "cardType": "mounted",
+        "title": "Knight",
+        "placement": "army",
+        "image": "default",
+        "combat": {
+            "init": 3,
+            "attack": 4,
+            "attackType": "melee",
+            "defense": 7 
+        },
+        "cost": [
+            { "costType": "wealth", "costVal": 1 },
+            { "costType": "iron", "costVal": 2 }
+        ],
+        "desc": "Knights are shock troops that hit the enemy hard and fast. However, the need to be supported by a well rounded army."
+    }, {
+        "cardType": "siege_engine",
+        "title": "Catapult",
+        "placement": "army",
+        "image": "default",
+        "combat": {
+            "init": 5,
+            "attack": 9,
+            "attackType": "ranged",
+            "defense": 4 
+        },
+        "cost": [
+            { "costType": "wood", "costVal": 2 }
+        ],
+        "desc": "Catapults are an effective means of bring down enemy gates and walls."
     }
 ]
