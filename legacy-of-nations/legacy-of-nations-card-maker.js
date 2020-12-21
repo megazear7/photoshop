@@ -50,6 +50,7 @@ var bottomModBackground = backgrounds.layerSets["bottom_mod_background"];
 var middleModBackground = backgrounds.layers["middle_mod_background"];
 var costBackground = backgrounds.layers["cost_background"];
 var combatBackground = backgrounds.layers["combat_background"];
+var descBackground = backgrounds.layers["desc_background"];
 var cardId = 1;
 var sheetId = 1;
 var cardPaths = [];
@@ -687,7 +688,12 @@ function updateMod(loc, count, pos) {
 
 function updateDesc() {
     return function(card) {
-        descElement.textItem.contents = card.desc;
+        if (card.desc) {
+            descBackground.visible = true;
+            descElement.textItem.contents = card.desc;
+        } else {
+            descBackground.visible = false;
+        }
     }
 }
 
@@ -716,7 +722,7 @@ function cleanup() {
         var group = costElement.layerSets[i];
         group.visible = true;
         group.layers["loc_ref"].visible = true;
-        group.layers["text"].textItem.contents = "1";
+        group.layers["text"].textItem.contents = "20";
     }
 
     revealOneByName(placementElement, PLACEMENTS.NATION);
@@ -731,6 +737,9 @@ function cleanup() {
     attackElement.layerSets["symbols"].layers["melee"].visible = true;
     attackElement.layerSets["symbols"].layers["ranged"].visible = false;
 
+    costBackground.visible = true;
+    combatBackground.visible = true;
+    middleModBackground.visible = true;
     bottomModBackground.visible = true;
     var mods = [ modBottomElement, modMiddleElement ];
     for (var i = 0; i < mods.length; i ++) {
