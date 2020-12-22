@@ -190,7 +190,7 @@
         ],
         "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
     }, {
-        "cardType": "foot",
+        "cardType": "foot_ranged",
         "title": "Archer",
         "placement": "army",
         "image": "default",

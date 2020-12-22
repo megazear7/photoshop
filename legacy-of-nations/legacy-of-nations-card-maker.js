@@ -177,14 +177,29 @@ function copyToReference(symbolName, locRef) {
 function moveToReference(copiedSymbol, locRef) {
     var refBounds = locRef.bounds;
     var copiedBounds = copiedSymbol.bounds;
-    copiedSymbol.translate(refBounds[0] - copiedBounds[0], refBounds[1] - copiedBounds[1]);
+    var symbolRefWidth = refBounds[2] - refBounds[0];
+    var symbolRefHeight = refBounds[3] - refBounds[1];
+    var copiedSymbolWidth = copiedBounds[2] - copiedBounds[0];
+    var copiedSymbolHeight = copiedBounds[3] - copiedBounds[1];
+    var xOffset = 0;
+    var yOffset = 0;
+
+    if (copiedSymbolWidth < symbolRefWidth) {
+        xOffset = (symbolRefWidth - copiedSymbolWidth) / 2;
+    }
+    if (copiedSymbolHeight < symbolRefHeight) {
+        yOffset = (symbolRefHeight - copiedSymbolHeight) / 2;
+    }
+
+    copiedSymbol.translate(refBounds[0] - copiedBounds[0] + xOffset, refBounds[1] - copiedBounds[1] + yOffset);
 }
 
 function updateCardType() {
     return function(card) {
         if (card.cardType) {
             typeElement.visible = true;
-            revealOneByName(typeElement, card.cardType);
+            typeElement.layers["loc_ref"].visible = false;
+            copyToReference(card.cardType, typeElement.layers["loc_ref"]);
         } else {
             typeElement.visible = false;
         }
@@ -195,7 +210,8 @@ function updateSubType() {
     return function(card) {
         if (card.subType) {
             subTypeElement.visible = true;
-            revealOneByName(subTypeElement, card.subType);
+            subTypeElement.layers["loc_ref"].visible = false;
+            copyToReference(card.subType, subTypeElement.layers["loc_ref"]);
         } else {
             subTypeElement.visible = false;
         }
@@ -225,7 +241,14 @@ function updateSubTitle() {
 
 function updatePlacement() {
     return function(card) {
-        revealOneByName(placementElement, card.placement);
+        if (card.placement) {
+            card.placement.visible = true;
+            placementElement.layers["loc_ref"].visible = false;
+            copyToReference(card.placement, placementElement.layers["loc_ref"]);
+        } else {
+            card.placement.visible = false;
+        }
+
     }
 }
 
@@ -376,12 +399,13 @@ function cleanup() {
         group.layers["text"].textItem.contents = "20";
     }
 
-    subTypeElement.visible = true;
-    typeElement.visible = true;
     revealOneByName(imageElement, "default");
-    revealOneByName(placementElement, PLACEMENTS.NATION);
-    revealOneByName(typeElement, CARD_TYPES.SCIENCE_RESEARCH);
-    revealOneByName(subTypeElement, "farm");
+    placementElement.visible = true;
+    typeElement.visible = true;
+    subTypeElement.visible = true;
+    placementElement.layers["loc_ref"].visible = true;
+    typeElement.layers["loc_ref"].visible = true;
+    subTypeElement.layers["loc_ref"].visible = true;
 
     initElement.visible = true;
     attackElement.visible = true;
