@@ -1,7 +1,7 @@
 [
     {
-        "cardType": "civic_building",
-        "subType": "farm",
+        "cardType": "science",
+        "subType": "mine",
         "title": "Farm",
         "placement": "building",
         "image": "default",
@@ -10,18 +10,6 @@
         ],
         "mod": {
             "bottom": [ "food", "food" ]
-        }
-    }, {
-        "cardType": "civic_building",
-        "subType": "lumber_mill",
-        "title": "Lumber Mill",
-        "placement": "building",
-        "image": "default",
-        "cost": [
-            { "costType": "food", "costVal": 2 }
-        ],
-        "mod": {
-            "bottom": [ "wood", "wood" ]
         }
     }
 ]

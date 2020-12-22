@@ -146,8 +146,14 @@ function revealOneByName(group, layerName) {
 
 function copyToReference(symbolName, locRef) {
     var symbolRef = symbols.layers[symbolName];
-    symbolRef.visible = true;
     var copiedSymbol = symbolRef.duplicate(copiedSymbols, ElementPlacement.PLACEATEND);
+    resizeByRef(copiedSymbol, locRef);
+    moveToReference(copiedSymbol, locRef);
+    copiedSymbol.visible = true;
+    locRef.visible = false;
+}
+
+function resizeByRef(copiedSymbol, locRef) {
     var refBounds = locRef.bounds;
     var copiedBounds = copiedSymbol.bounds;
     var symbolRefWidth = refBounds[2] - refBounds[0];
@@ -156,22 +162,12 @@ function copyToReference(symbolName, locRef) {
     var copiedSymbolHeight = copiedBounds[3] - copiedBounds[1];
     var percentWidth = (symbolRefWidth / copiedSymbolWidth) * 100;
     var percentHeight = (symbolRefHeight / copiedSymbolHeight) * 100;
+    var percentChange = percentWidth < percentHeight ? percentWidth : percentHeight;
     var startRulerUnits = app.preferences.rulerUnits;
-    app.preferences.rulerUnits = Units.PERCENT;
-
     copiedSymbol.rasterize(RasterizeType.ENTIRELAYER);
-    if (percentWidth < 100 && percentWidth < percentHeight) {
-        copiedSymbol.resize(percentWidth, percentWidth, AnchorPosition.MIDDLECENTER)
-    } else if (percentHeight < 100 && percentHeight < percentWidth) {
-        copiedSymbol.resize(percentHeight, percentHeight, AnchorPosition.MIDDLECENTER)
-    }
-
+    app.preferences.rulerUnits = Units.PERCENT;
+    copiedSymbol.resize(percentChange, percentChange, AnchorPosition.MIDDLECENTER);
     app.preferences.rulerUnits = startRulerUnits;
-
-    moveToReference(copiedSymbol, locRef);
-    copiedSymbol.visible = true;
-    locRef.visible = false;
-    symbolRef.visible = false;
 }
 
 function moveToReference(copiedSymbol, locRef) {
