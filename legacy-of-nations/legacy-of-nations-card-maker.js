@@ -40,6 +40,7 @@ var subTitleElement = textElement.layers["sub_title"];
 var descElement = textElement.layers["desc"];
 var imageElement = elements.layerSets["image"];
 var typeElement = elements.layerSets["type"];
+var subTypeElement = elements.layerSets["sub_type"];
 var placementElement = elements.layerSets["placement"];
 var combatElement = elements.layerSets["combat"];
 var initElement = combatElement.layerSets["init"];
@@ -68,26 +69,23 @@ createCards();
 function createCards() {
     cleanup();
 
-    try {
-        var temporaryIndex = 1;
-        for (var i = 0; i < cards.length; i++) {
-            var card = cards[i];
-            if ((temporaryIndex-1) >= cardsPerSheet) {
-                printSheet();
-                temporaryIndex = 1;
-            }
-
-            setupCard(card);
-            printCard(temporaryIndex);
-            cleanup();
-            temporaryIndex = temporaryIndex + 1;
-            cardId = cardId + 1;
+    var temporaryIndex = 1;
+    for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        if ((temporaryIndex-1) >= cardsPerSheet) {
+            printSheet();
+            temporaryIndex = 1;
         }
 
-        printSheet();
-    } finally {
+        setupCard(card);
+        printCard(temporaryIndex);
         cleanup();
+        temporaryIndex = temporaryIndex + 1;
+        cardId = cardId + 1;
     }
+
+    printSheet();
+    cleanup();
 
     alert("Creation complete");
 }
@@ -95,12 +93,9 @@ function createCards() {
 function createSingleCard() {
     cleanup();
 
-    try {
-        setupCard(singleCard);
-        printCard(0, "~/Desktop/card.jpg");
-    } finally {
-        cleanup();
-    }
+    setupCard(singleCard);
+    printCard(0, "~/Desktop/card.jpg");
+    cleanup();
 
     alert("Creation complete");
 }
@@ -108,6 +103,7 @@ function createSingleCard() {
 function buildElements() {
     return [
         updateCardType(),
+        updateSubType(),
         updateTitle(),
         updateSubTitle(),
         updatePlacement(),
@@ -150,20 +146,61 @@ function revealOneByName(group, layerName) {
 
 function copyToReference(symbolName, locRef) {
     var symbolRef = symbols.layers[symbolName];
+    symbolRef.visible = true;
     var copiedSymbol = symbolRef.duplicate(copiedSymbols, ElementPlacement.PLACEATEND);
     var refBounds = locRef.bounds;
     var copiedBounds = copiedSymbol.bounds;
-    copiedSymbol.translate(refBounds[0] - copiedBounds[0], refBounds[1] - copiedBounds[1]);
+    var symbolRefWidth = refBounds[2] - refBounds[0];
+    var symbolRefHeight = refBounds[3] - refBounds[1];
+    var copiedSymbolWidth = copiedBounds[2] - copiedBounds[0];
+    var copiedSymbolHeight = copiedBounds[3] - copiedBounds[1];
+    var percentWidth = (symbolRefWidth / copiedSymbolWidth) * 100;
+    var percentHeight = (symbolRefHeight / copiedSymbolHeight) * 100;
+    var startRulerUnits = app.preferences.rulerUnits;
+    app.preferences.rulerUnits = Units.PERCENT;
+
+    copiedSymbol.rasterize(RasterizeType.ENTIRELAYER);
+    if (percentWidth < 100 && percentWidth < percentHeight) {
+        copiedSymbol.resize(percentWidth, percentWidth, AnchorPosition.MIDDLECENTER)
+    } else if (percentHeight < 100 && percentHeight < percentWidth) {
+        copiedSymbol.resize(percentHeight, percentHeight, AnchorPosition.MIDDLECENTER)
+    }
+
+    app.preferences.rulerUnits = startRulerUnits;
+
+    moveToReference(copiedSymbol, locRef);
     copiedSymbol.visible = true;
     locRef.visible = false;
+    symbolRef.visible = false;
+}
+
+function moveToReference(copiedSymbol, locRef) {
+    var refBounds = locRef.bounds;
+    var copiedBounds = copiedSymbol.bounds;
+    copiedSymbol.translate(refBounds[0] - copiedBounds[0], refBounds[1] - copiedBounds[1]);
 }
 
 function updateCardType() {
     return function(card) {
-        revealOneByName(typeElement, card.cardType);
+        if (card.cardType) {
+            typeElement.visible = true;
+            revealOneByName(typeElement, card.cardType);
+        } else {
+            typeElement.visible = false;
+        }
     }
 }
 
+function updateSubType() {
+    return function(card) {
+        if (card.subType) {
+            subTypeElement.visible = true;
+            revealOneByName(subTypeElement, card.subType);
+        } else {
+            subTypeElement.visible = false;
+        }
+    }
+}
 function updateTitle() {
     return function(card) {
         if (card.title) {
@@ -339,9 +376,12 @@ function cleanup() {
         group.layers["text"].textItem.contents = "20";
     }
 
+    subTypeElement.visible = true;
+    typeElement.visible = true;
     revealOneByName(imageElement, "default");
     revealOneByName(placementElement, PLACEMENTS.NATION);
     revealOneByName(typeElement, CARD_TYPES.SCIENCE_RESEARCH);
+    revealOneByName(subTypeElement, "farm");
 
     initElement.visible = true;
     attackElement.visible = true;

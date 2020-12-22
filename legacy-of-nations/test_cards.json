@@ -1,18 +1,27 @@
 [
     {
-        "cardType": "science",
-        "title": "Codex",
-        "placement": "research",
+        "cardType": "civic_building",
+        "subType": "farm",
+        "title": "Farm",
+        "placement": "building",
         "image": "default",
         "cost": [
-            { "costType": "wealth", "costVal": 2 },
             { "costType": "wood", "costVal": 2 }
         ],
         "mod": {
-            "bottom": [
-                { "modType": "increase_hand_limit", "modVal": 1 }
-            ]
-        },
-        "desc": "Spearmen are defensive troops that can withstand a lot of damage and are easy to recruit."
+            "bottom": [ "food", "food" ]
+        }
+    }, {
+        "cardType": "civic_building",
+        "subType": "lumber_mill",
+        "title": "Lumber Mill",
+        "placement": "building",
+        "image": "default",
+        "cost": [
+            { "costType": "food", "costVal": 2 }
+        ],
+        "mod": {
+            "bottom": [ "wood", "wood" ]
+        }
     }
 ]

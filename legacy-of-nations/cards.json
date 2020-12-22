@@ -40,7 +40,7 @@
         "title": "Uruk",
         "subTitle": "Sumerian - Starting City",
         "placement": "nation",
-        "image": "sumeria",
+        "image": "sumer",
         "combat": {
             "defense": 14
         },
@@ -53,7 +53,7 @@
         "title": "The First Walls",
         "subTitle": "Sumerian - Starting Fort",
         "placement": "nation",
-        "image": "sumeria",
+        "image": "sumer",
         "combat": {
             "init": 6,
             "attack": 1,
@@ -66,7 +66,7 @@
         "title": "The Fertile Cresent",
         "subTitle": "Sumerian - Starting Land",
         "placement": "nation",
-        "image": "sumeria",
+        "image": "sumer",
         "mod": {
             "middle": [ "food", "food", "food" ]
         },
@@ -81,7 +81,7 @@
             { "costType": "iron", "costVal": 3 }
         ],
         "mod": {
-            "bottom": [ "population" ]
+            "bottom": [ "increase_max_population" ]
         },
         "desc": "Forges increase the rate of production of weapons and armor; making it easier to deploy larger and better equiped armies."
     }, {
@@ -94,7 +94,7 @@
             { "costType": "food", "costVal": 4 }
         ],
         "mod": {
-            "bottom": [ "city" ]
+            "bottom": [ "increase_city_limit" ]
         },
         "desc": "Paving made for longer lasting city roads that could impress even the richest foreign diplomats."
     }, {
@@ -107,7 +107,7 @@
             { "costType": "wood", "costVal": 4 }
         ],
         "mod": {
-            "bottom": [ "upkeep" ]
+            "bottom": [ "increase_max_income" ]
         },
         "desc": "Toll roads increased the revenue of the state, allowing them to profit off of the mercentile exchange of it's people."
     }, {
@@ -124,7 +124,8 @@
         },
         "desc": "The codex eventually replaced the scroll as the default writing format. It allowed for easier access to the middle and end of the document."
     }, {
-        "cardType": "farm",
+        "cardType": "civic_building",
+        "subType": "farm",
         "title": "Farm",
         "placement": "building",
         "image": "default",
@@ -135,7 +136,8 @@
             "bottom": [ "food", "food" ]
         }
     }, {
-        "cardType": "lumber_mill",
+        "cardType": "civic_building",
+        "subType": "lumber_mill",
         "title": "Lumber Mill",
         "placement": "building",
         "image": "default",
@@ -146,7 +148,8 @@
             "bottom": [ "wood", "wood" ]
         }
     }, {
-        "cardType": "mine",
+        "cardType": "civic_building",
+        "subType": "mine",
         "title": "Mine",
         "placement": "building",
         "image": "default",
@@ -158,7 +161,8 @@
             "bottom": [ "iron", "iron" ]
         }
     }, {
-        "cardType": "market",
+        "cardType": "civic_building",
+        "subType": "market",
         "title": "Market",
         "placement": "building",
         "image": "default",
@@ -215,7 +219,7 @@
             { "costType": "wealth", "costVal": 1 },
             { "costType": "iron", "costVal": 2 }
         ],
-        "desc": "Knights are shock troops that hit the enemy hard and fast. However, the need to be supported by a well rounded army."
+        "desc": "Knights are shock troops that hit the enemy hard and fast. However, they need to be supported by a well rounded army."
     }, {
         "cardType": "siege_engine",
         "title": "Catapult",

@@ -4,12 +4,12 @@
         "title": "Uruk",
         "subTitle": "Sumerian - Starting City",
         "placement": "nation",
-        "image": "sumeria",
+        "image": "sumer",
         "combat": {
             "defense": 14
         },
         "mod": {
-            "middle": [ "knowledge" ]
+            "middle": [ "food", "increase_max_population" ]
         },
         "desc": "The first city; the birth of civilization; wrapped in myth, draped in the first glories of man."
     }
