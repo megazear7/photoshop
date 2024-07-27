@@ -448,6 +448,7 @@ function printCard(fileIndex, path) {
 
 function printSheet() {
     var sheetName = "sheet-" + sheetId;
+    var fileRef = new File(activeDocument.path.fullName + "/tmp/" + sheetName + ".jpg");
     var sheetWidth = 10; // 4 cards wide = 10 inches
     var sheetHeight = 7; // 2 cards tall = 2 inches
 
@@ -466,8 +467,6 @@ function printSheet() {
             }
         }
     }
-
-    var fileRef = new File("~/Desktop/sheets/" + sheetName + ".jpg");
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = 12;
     sheetDoc.saveAs(fileRef, jpegOptions, true);
